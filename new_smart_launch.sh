@@ -34,7 +34,7 @@ if [ "$FACTORIO_SERVER_NAME" ] \
 then
   factorio_command="$factorio_command --server-settings /opt/factorio/server-settings.json"
   # Set Server Name default value if not set by user param
-  if [ -z $FACTORIO_SERVER_NAME ]
+  if [[ -z $FACTORIO_SERVER_NAME ]]
   then
     FACTORIO_SERVER_NAME="Factorio Server $VERSION"
   fi
@@ -88,7 +88,11 @@ cat << EOF > $SERVER_SETTINGS
 "_comment_visibility": ["public: Game will be published on the official Factorio matching server",
                         "lan: Game will be broadcast on LAN",
                         "hidden: Game will not be published anywhere"],
-"visibility": "$FACTORIO_SERVER_VISIBILITY",
+  "visibility":
+  {
+    "public": true,
+    "lan": true
+  },
 
 "_comment_credentials": "Your factorio.com login credentials. Required for games with visibility public",
 "username": "$FACTORIO_USER_USERNAME",
@@ -114,16 +118,16 @@ then
 factorio_command="$factorio_command --complete"
 fi
 # Setting allow-commands option
-factorio_command="$factorio_command --allow-commands $FACTORIO_ALLOW_COMMANDS"
+#factorio_command="$factorio_command --allow-commands $FACTORIO_ALLOW_COMMANDS"
 # Setting auto-pause option
 if [ "$FACTORIO_NO_AUTO_PAUSE" == true ] 
 then
 factorio_command="$factorio_command --no-auto-pause"
 fi
 # Setting autosave-interval option
-factorio_command="$factorio_command --autosave-interval $FACTORIO_AUTOSAVE_INTERVAL"
+#factorio_command="$factorio_command --autosave-interval $FACTORIO_AUTOSAVE_INTERVAL"
 # Setting autosave-slots option
-factorio_command="$factorio_command --autosave-slots $FACTORIO_AUTOSAVE_SLOTS"
+#factorio_command="$factorio_command --autosave-slots $FACTORIO_AUTOSAVE_SLOTS"
 # Setting rcon-port option
 factorio_command="$factorio_command --rcon-port 27015"
 # Setting rcon password option
@@ -176,7 +180,7 @@ then
     echo "###"
     /opt/factorio/bin/x64/factorio --create save.zip
   fi
-  factorio_command="$factorio_command --start-server-load-latest"
+  factorio_command="$factorio_command --start-server-load-latest --port 34197"
 else
   factorio_command="$factorio_command --start-server $FACTORIO_SAVE"
 fi
